@@ -79,19 +79,30 @@
     }
 
     .info-grid {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      max-width: 960px;
       margin: 30px auto;
-      max-width: 800px;
+    }
+
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .info-card {
       background-color: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
       padding: 20px;
       border-radius: 12px;
-      width: 180px;
       text-align: center;
     }
 
@@ -205,101 +216,101 @@
     </section>
 
     <div class="form-container" id="form">
-  <h3>Rellena tu información</h3>
-  <label for="nameInput">Tu nombre de Discord:</label>
-  <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
+      <h3>Rellena tu información</h3>
+      <label for="nameInput">Tu nombre de Discord:</label>
+      <input id="nameInput" type="text" required placeholder="ejemplo#1234">
 
-  <label for="countrySelect">País:</label>
-  <select id="countrySelect" required>
-    <option value="">Cargando países...</option>
-  </select>
+      <label for="countrySelect">País:</label>
+      <select id="countrySelect" required>
+        <option value="">Cargando países...</option>
+      </select>
 
-  <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
-  <select id="citySelect" disabled required>
-    <option value="">Seleccione un país primero</option>
-  </select>
+      <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
+      <select id="citySelect" disabled required>
+        <option value="">Seleccione un país primero</option>
+      </select>
 
-  <button id="submitBtn">Enviar</button>
-  <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
-</div>
+      <button id="submitBtn">Enviar</button>
+      <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
+    </div>
 
-<script>
-  const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
+    <script>
+      const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
 
-  const nameInput = document.getElementById("nameInput");
-  const countrySelect = document.getElementById("countrySelect");
-  const citySelect = document.getElementById("citySelect");
-  const message = document.getElementById("message");
-  const button = document.getElementById("submitBtn");
+      const nameInput = document.getElementById("nameInput");
+      const countrySelect = document.getElementById("countrySelect");
+      const citySelect = document.getElementById("citySelect");
+      const message = document.getElementById("message");
+      const button = document.getElementById("submitBtn");
 
-  fetch("https://countriesnow.space/api/v0.1/countries/positions")
-    .then(r => r.json())
-    .then(({ data }) => {
-      countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
-      data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        countrySelect.appendChild(opt);
-      });
-    });
+      fetch("https://countriesnow.space/api/v0.1/countries/positions")
+        .then(r => r.json())
+        .then(({ data }) => {
+          countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
+          data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            countrySelect.appendChild(opt);
+          });
+        });
 
-  countrySelect.addEventListener("change", async () => {
-    const country = countrySelect.value;
-    citySelect.disabled = true;
-    citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+      countrySelect.addEventListener("change", async () => {
+        const country = countrySelect.value;
+        citySelect.disabled = true;
+        citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
 
-    const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ country })
-    });
-    const { data } = await res.json();
-    citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-    data.forEach(city => {
-      const opt = document.createElement("option");
-      opt.value = city;
-      opt.textContent = city;
-      citySelect.appendChild(opt);
-    });
-    citySelect.disabled = false;
-  });
-
-  button.addEventListener("click", async () => {
-    const name = nameInput.value.trim();
-    const country = countrySelect.value;
-    const city = citySelect.value;
-
-    if (!name || !country || !city) {
-      alert("Por favor completa todos los campos.");
-      return;
-    }
-
-    button.disabled = true;
-    button.textContent = "Enviando...";
-
-    try {
-      await fetch(endpoint, {
-        method: "POST",
-        body: new URLSearchParams({ name, country, city })
+        const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ country })
+        });
+        const { data } = await res.json();
+        citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+        data.forEach(city => {
+          const opt = document.createElement("option");
+          opt.value = city;
+          opt.textContent = city;
+          citySelect.appendChild(opt);
+        });
+        citySelect.disabled = false;
       });
 
-      message.style.display = "block";
-    } catch (err) {
-      message.textContent = "Hubo un error. Inténtalo más tarde.";
-      message.style.display = "block";
-      message.style.backgroundColor = "#dc2626";
-      console.error(err);
-    }
+      button.addEventListener("click", async () => {
+        const name = nameInput.value.trim();
+        const country = countrySelect.value;
+        const city = citySelect.value;
 
-    nameInput.value = "";
-    countrySelect.value = "";
-    citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
-    citySelect.disabled = true;
-    button.disabled = false;
-    button.textContent = "Enviar";
-  });
-</script>
+        if (!name || !country || !city) {
+          alert("Por favor completa todos los campos.");
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Enviando...";
+
+        try {
+          await fetch(endpoint, {
+            method: "POST",
+            body: new URLSearchParams({ name, country, city })
+          });
+
+          message.style.display = "block";
+        } catch (err) {
+          message.textContent = "Hubo un error. Inténtalo más tarde.";
+          message.style.display = "block";
+          message.style.backgroundColor = "#dc2626";
+          console.error(err);
+        }
+
+        nameInput.value = "";
+        countrySelect.value = "";
+        citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
+        citySelect.disabled = true;
+        button.disabled = false;
+        button.textContent = "Enviar";
+      });
+    </script>
   </div>
 </body>
 </html>
