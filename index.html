@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comunidad IA BigSchool</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -11,38 +11,32 @@
       background: url('https://www.lockheedmartin.com/content/dam/lockheed-martin/eo/photo/ai-ml/artificial-intelligence-1920.jpg') center/cover no-repeat;
       color: #fff;
     }
-
     .overlay {
       background: rgba(0, 0, 0, 0.75);
       min-height: 100vh;
       padding: 40px 20px;
     }
-
     .hero {
       text-align: center;
       max-width: 900px;
       margin: auto;
       padding-top: 30px;
     }
-
     .hero img {
       max-width: 120px;
       margin-bottom: 20px;
     }
-
     .hero h1 {
       font-size: 38px;
       font-weight: 700;
       margin-bottom: 20px;
     }
-
     .hero p {
       font-size: 18px;
       color: #e2e8f0;
       max-width: 700px;
       margin: 0 auto 40px;
     }
-
     .cta-buttons {
       display: flex;
       justify-content: center;
@@ -50,7 +44,6 @@
       flex-wrap: wrap;
       margin-bottom: 40px;
     }
-
     .cta-buttons a {
       text-decoration: none;
       padding: 14px 28px;
@@ -59,45 +52,27 @@
       border-radius: 8px;
       transition: background 0.3s ease;
     }
-
     .blue-btn {
       background-color: #3b82f6;
       color: white;
     }
-
     .blue-btn:hover {
       background-color: #2563eb;
     }
-
     .yellow-btn {
       background-color: #facc15;
       color: #1e293b;
     }
-
     .yellow-btn:hover {
       background-color: #eab308;
     }
-
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 30px;
       max-width: 960px;
       margin: 30px auto;
     }
-
-    @media (max-width: 768px) {
-      .info-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 500px) {
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .info-card {
       background-color: rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
@@ -105,24 +80,20 @@
       border-radius: 12px;
       text-align: center;
     }
-
     .info-card img {
       width: 36px;
       height: 36px;
       margin-bottom: 10px;
     }
-
     .info-card h4 {
       margin: 10px 0 5px;
       font-size: 15px;
       color: #facc15;
     }
-
     .info-card p {
       font-size: 16px;
       margin: 0;
     }
-
     .form-container {
       background-color: #1e293b;
       padding: 30px;
@@ -132,20 +103,17 @@
       max-width: 500px;
       margin: 60px auto;
     }
-
     .form-container h3 {
       font-size: 24px;
       margin-bottom: 20px;
       text-align: center;
     }
-
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
       color: #cbd5e1;
     }
-
     input, select {
       width: 100%;
       padding: 12px;
@@ -156,7 +124,6 @@
       color: white;
       font-size: 15px;
     }
-
     button {
       width: 100%;
       padding: 14px;
@@ -168,7 +135,6 @@
       color: white;
       cursor: pointer;
     }
-
     .success-message {
       display: none;
       margin-top: 20px;
@@ -222,7 +188,7 @@
 
       <label for="countrySelect">País:</label>
       <select id="countrySelect" required>
-        <option value="">Cargando países...</option>
+        <option value="">-- Selecciona un país --</option>
       </select>
 
       <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
@@ -233,112 +199,61 @@
       <button id="submitBtn">Enviar</button>
       <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
     </div>
+  </div>
 
-    <script>
-      const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const countryMap = {};
 
-      const nameInput = document.getElementById("nameInput");
-      const countrySelect = document.getElementById("countrySelect");
-      const citySelect = document.getElementById("citySelect");
-      const message = document.getElementById("message");
-      const button = document.getElementById("submitBtn");
-
-      const countries = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
-  "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
-  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon",
-  "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia",
-  "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
-  "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia",
-  "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti",
-  "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
-  "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia",
-  "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia",
-  "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco",
-  "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand",
-  "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama",
-  "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
-  "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
-  "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain",
-  "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand",
-  "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine",
-  "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen",
-  "Zambia", "Zimbabwe"
-];
-
-countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
-countries.forEach(name => {
-  const opt = document.createElement("option");
-  opt.value = name;
-  opt.textContent = name;
-  countrySelect.appendChild(opt);
-});
-          countries.forEach(name => {
+      // Obtener lista de países desde la API y llenar el desplegable
+      fetch("https://countriesnow.space/api/v0.1/countries/positions")
+        .then(r => r.json())
+        .then(({ data }) => {
+          data.forEach(({ name }) => {
             const opt = document.createElement("option");
             opt.value = name;
             opt.textContent = name;
             countrySelect.appendChild(opt);
+            countryMap[name] = name; // Para usar el nombre tal cual al pedir ciudades
           });
-        });
-        });
+        }); // Truncated for brevity
+      const countrySelect = document.getElementById("countrySelect");
+      const citySelect = document.getElementById("citySelect");
+
+      Object.keys(countryMap).forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        countrySelect.appendChild(opt);
+      });
 
       countrySelect.addEventListener("change", async () => {
-        const country = countrySelect.value;
+        const country = countryMap[countrySelect.value];
         citySelect.disabled = true;
         citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
 
-        const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country })
-        });
-        const { data } = await res.json();
-        citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-        data.forEach(city => {
-          const opt = document.createElement("option");
-          opt.value = city;
-          opt.textContent = city;
-          citySelect.appendChild(opt);
-        });
-        citySelect.disabled = false;
-      });
-
-      button.addEventListener("click", async () => {
-        const name = nameInput.value.trim();
-        const country = countrySelect.value;
-        const city = citySelect.value;
-
-        if (!name || !country || !city) {
-          alert("Por favor completa todos los campos.");
-          return;
-        }
-
-        button.disabled = true;
-        button.textContent = "Enviando...";
-
         try {
-          await fetch(endpoint, {
+          const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
             method: "POST",
-            body: new URLSearchParams({ name, country, city })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country })
           });
-
-          message.style.display = "block";
-        } catch (err) {
-          message.textContent = "Hubo un error. Inténtalo más tarde.";
-          message.style.display = "block";
-          message.style.backgroundColor = "#dc2626";
-          console.error(err);
+          const { data } = await res.json();
+          citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+          data.forEach(city => {
+            const opt = document.createElement("option");
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+          });
+          citySelect.disabled = false;
+        } catch (error) {
+          citySelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+          console.error("Error al cargar ciudades:", error);
         }
-
-        nameInput.value = "";
-        countrySelect.value = "";
-        citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
-        citySelect.disabled = true;
-        button.disabled = false;
-        button.textContent = "Enviar";
       });
-    </script>
-  </div>
+    });
+  </script>
 </body>
 </html>
 
