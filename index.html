@@ -243,11 +243,6 @@
       const message = document.getElementById("message");
       const button = document.getElementById("submitBtn");
 
-      fetch("https://restcountries.com/v3.1/all")
-        .then(r => r.json())
-        .then(data => {
-          countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
-          const countries = data.map(c => c.name.common).sort((a, b) => a.localeCompare(b));
       const countries = [
   "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
   "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
@@ -346,5 +341,4 @@ countries.forEach(name => {
   </div>
 </body>
 </html>
-
 
