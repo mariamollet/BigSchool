@@ -273,14 +273,6 @@ countries.forEach(name => {
   opt.textContent = name;
   countrySelect.appendChild(opt);
 });
-          countries.forEach(name => {
-            const opt = document.createElement("option");
-            opt.value = name;
-            opt.textContent = name;
-            countrySelect.appendChild(opt);
-          });
-        });
-        });
 
       countrySelect.addEventListener("change", async () => {
         const country = countrySelect.value;
@@ -341,3 +333,4 @@ countries.forEach(name => {
   </div>
 </body>
 </html>
+
