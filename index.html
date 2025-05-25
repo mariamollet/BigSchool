@@ -2,68 +2,127 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Únete a la Comunidad de IA</title>
+  <title>Comunidad IA BigSchool</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
+      background: url('https://www.lockheedmartin.com/content/dam/lockheed-martin/eo/photo/ai-ml/artificial-intelligence-1920.jpg') center/cover no-repeat;
+      color: #fff;
     }
 
-    header {
-      background: url('https://thebigschool.com/wp-content/uploads/2023/10/portada-bootcamp-ia-scaled.jpg') center/cover no-repeat;
-      padding: 80px 20px;
+    .overlay {
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .hero {
       text-align: center;
-    }
-
-    header img {
-      max-width: 160px;
-      margin-bottom: 30px;
-    }
-
-    header h1 {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 18px;
-      max-width: 600px;
-      margin: 0 auto;
-      color: #cbd5e1;
-    }
-
-    .section {
-      padding: 60px 20px;
       max-width: 900px;
       margin: auto;
+      padding-top: 30px;
     }
 
-    .section h2 {
-      font-size: 28px;
+    .hero img {
+      max-width: 120px;
       margin-bottom: 20px;
     }
 
-    .section p {
-      font-size: 16px;
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
       color: #e2e8f0;
-      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .cta-buttons a {
+      text-decoration: none;
+      padding: 14px 28px;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .blue-btn {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .blue-btn:hover {
+      background-color: #2563eb;
+    }
+
+    .yellow-btn {
+      background-color: #facc15;
+      color: #1e293b;
+    }
+
+    .yellow-btn:hover {
+      background-color: #eab308;
+    }
+
+    .info-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 30px auto;
+      max-width: 800px;
+    }
+
+    .info-card {
+      background-color: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+      width: 180px;
+      text-align: center;
+    }
+
+    .info-card img {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 10px;
+    }
+
+    .info-card h4 {
+      margin: 10px 0 5px;
+      font-size: 15px;
+      color: #facc15;
+    }
+
+    .info-card p {
+      font-size: 16px;
+      margin: 0;
     }
 
     .form-container {
       background-color: #1e293b;
-      padding: 40px;
+      padding: 30px;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       width: 100%;
       max-width: 500px;
-      margin: 40px auto;
+      margin: 60px auto;
     }
 
-    h3 {
+    .form-container h3 {
       font-size: 24px;
       margin-bottom: 20px;
       text-align: center;
@@ -99,10 +158,6 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #2563eb;
-    }
-
     .success-message {
       display: none;
       margin-top: 20px;
@@ -116,124 +171,136 @@
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://thebigschool.com/wp-content/uploads/2024/07/BigSchool_Logo-1.svg" alt="BigSchool Logo">
-    <h1>Encuentra gente como tú interesada en la IA</h1>
-    <p>Rellena esta breve encuesta y te conectaremos con otros estudiantes y profesionales interesados en la Inteligencia Artificial cerca de ti.</p>
-  </header>
+  <div class="overlay">
+    <section class="hero">
+      <img src="https://thebigschool.com/wp-content/uploads/2024/05/BigSchool-Logo.svg" alt="BigSchool Logo">
+      <h1>Conecta con tu comunidad del Máster de IA</h1>
+      <p>¿Y si uno de tus compañeros del máster está a solo unas calles? Rellena esta encuesta y descubre qué estudiantes de IA están cerca de ti. Podéis compartir ideas, cafés, proyectos... ¡y hasta montar una startup!</p>
+      <div class="cta-buttons">
+        <a href="#form" class="blue-btn">Quiero unirme</a>
+        <a href="#form" class="yellow-btn">Conectar con otros alumnos</a>
+      </div>
+      <div class="info-grid">
+        <div class="info-card">
+          <img src="https://thebigschool.com/wp-content/uploads/2024/02/hourglass_553213-1.svg" alt="Duración">
+          <h4>DURACIÓN</h4>
+          <p>Toda la vida</p>
+        </div>
+        <div class="info-card">
+          <img src="https://thebigschool.com/wp-content/uploads/2024/07/Calendar.svg" alt="Inicio">
+          <h4>INICIO</h4>
+          <p>Desde ya</p>
+        </div>
+        <div class="info-card">
+          <img src="https://thebigschool.com/wp-content/uploads/2024/07/monitor_266121-1.svg" alt="Metodología">
+          <h4>METODOLOGÍA</h4>
+          <p>Presencial y online</p>
+        </div>
+        <div class="info-card">
+          <img src="https://thebigschool.com/wp-content/uploads/2024/06/price-tag_3770820-1.svg" alt="Precio">
+          <h4>PRECIO</h4>
+          <p>Gratis</p>
+        </div>
+      </div>
+    </section>
 
-  <section class="section">
-    <h2>¿Por qué unirte a nuestra comunidad de IA?</h2>
-    <p>
-      La Inteligencia Artificial está revolucionando el mundo. ¿Y si te dijéramos que no tienes que aprenderla solo?
-      Al completar esta encuesta formarás parte de una red local de estudiantes, entusiastas y profesionales de IA.
-    </p>
-    <p>
-      Podrás:
-      <ul>
-        <li>👥 Conectar con personas cerca de ti con intereses similares</li>
-        <li>🧠 Compartir recursos, ideas y motivación</li>
-        <li>📍 Organizar cafés, sesiones de estudio y eventos presenciales</li>
-        <li>🚀 Inspirarte y avanzar más rápido en tu aprendizaje</li>
-      </ul>
-    </p>
-  </section>
+    <div class="form-container" id="form">
+  <h3>Rellena tu información</h3>
+  <label for="nameInput">Tu nombre de Discord:</label>
+  <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
 
-  <div class="form-container">
-    <h3>Rellena tu información</h3>
-    <label for="nameInput">Tu nombre de Discord:</label>
-    <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
+  <label for="countrySelect">País:</label>
+  <select id="countrySelect" required>
+    <option value="">Cargando países...</option>
+  </select>
 
-    <label for="countrySelect">País:</label>
-    <select id="countrySelect" required>
-      <option value="">Cargando países...</option>
-    </select>
+  <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
+  <select id="citySelect" disabled required>
+    <option value="">Seleccione un país primero</option>
+  </select>
 
-    <label for="citySelect">Ciudad:</label>
-    <select id="citySelect" disabled required>
-      <option value="">Seleccione un país primero</option>
-    </select>
+  <button id="submitBtn">Enviar</button>
+  <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
+</div>
 
-    <button id="submitBtn">Enviar</button>
-    <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
-  </div>
+<script>
+  const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
 
-  <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
+  const nameInput = document.getElementById("nameInput");
+  const countrySelect = document.getElementById("countrySelect");
+  const citySelect = document.getElementById("citySelect");
+  const message = document.getElementById("message");
+  const button = document.getElementById("submitBtn");
 
-    const nameInput = document.getElementById("nameInput");
-    const countrySelect = document.getElementById("countrySelect");
-    const citySelect = document.getElementById("citySelect");
-    const message = document.getElementById("message");
-    const button = document.getElementById("submitBtn");
-
-    fetch("https://countriesnow.space/api/v0.1/countries/positions")
-      .then(r => r.json())
-      .then(({ data }) => {
-        countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
-        data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
-          const opt = document.createElement("option");
-          opt.value = name;
-          opt.textContent = name;
-          countrySelect.appendChild(opt);
-        });
-      });
-
-    countrySelect.addEventListener("change", async () => {
-      const country = countrySelect.value;
-      citySelect.disabled = true;
-      citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
-
-      const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ country })
-      });
-      const { data } = await res.json();
-      citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-      data.forEach(city => {
+  fetch("https://countriesnow.space/api/v0.1/countries/positions")
+    .then(r => r.json())
+    .then(({ data }) => {
+      countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
+      data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
         const opt = document.createElement("option");
-        opt.value = city;
-        opt.textContent = city;
-        citySelect.appendChild(opt);
+        opt.value = name;
+        opt.textContent = name;
+        countrySelect.appendChild(opt);
       });
-      citySelect.disabled = false;
     });
 
-    button.addEventListener("click", async () => {
-      const name = nameInput.value.trim();
-      const country = countrySelect.value;
-      const city = citySelect.value;
+  countrySelect.addEventListener("change", async () => {
+    const country = countrySelect.value;
+    citySelect.disabled = true;
+    citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
 
-      if (!name || !country || !city) {
-        alert("Por favor completa todos los campos.");
-        return;
-      }
-
-      button.disabled = true;
-      button.textContent = "Enviando...";
-
-      try {
-        await fetch(endpoint, {
-          method: "POST",
-          body: new URLSearchParams({ name, country, city })
-        });
-
-        message.style.display = "block";
-      } catch (err) {
-        message.textContent = "Hubo un error. Inténtalo más tarde.";
-        message.style.display = "block";
-        message.style.backgroundColor = "#dc2626";
-        console.error(err);
-      }
-
-      nameInput.value = "";
-      countrySelect.value = "";
-      citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
-      citySelect.disabled = true;
-      button.disabled = false;
-      button.textContent = "Enviar";
+    const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ country })
     });
-  </script>
+    const { data } = await res.json();
+    citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+    data.forEach(city => {
+      const opt = document.createElement("option");
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+    citySelect.disabled = false;
+  });
+
+  button.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    const country = countrySelect.value;
+    const city = citySelect.value;
+
+    if (!name || !country || !city) {
+      alert("Por favor completa todos los campos.");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Enviando...";
+
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        body: new URLSearchParams({ name, country, city })
+      });
+
+      message.style.display = "block";
+    } catch (err) {
+      message.textContent = "Hubo un error. Inténtalo más tarde.";
+      message.style.display = "block";
+      message.style.backgroundColor = "#dc2626";
+      console.error(err);
+    }
+
+    nameInput.value = "";
+    countrySelect.value = "";
+    citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
+    citySelect.disabled = true;
+    button.disabled = false;
+    button.textContent = "Enviar";
+  });
+</script>
+  </div>
 </body>
 </html>
+
