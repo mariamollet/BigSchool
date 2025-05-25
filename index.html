@@ -2,33 +2,99 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Encuesta País y Ciudad</title>
+  <title>Encuesta PaÃ­s y Ciudad</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 30px; }
-    label { display: block; margin-top: 20px; }
-    select, input, button { width: 300px; padding: 8px; }
-    button { margin-top: 25px; }
-    .success { color: green; margin-top: 20px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f4f4f4, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 25px;
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      margin-top: 20px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #1e40af;
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1d2f80;
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #e6f9ec;
+      color: #0f5132;
+      border: 1px solid #badbcc;
+      border-radius: 6px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>Encuesta</h1>
+  <div class="form-container">
+    <h1>Encuesta</h1>
+    <label for="nameInput">Tu nombre de Discord:</label>
+    <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
 
-  <label for="nameInput">Tu nombre de Discord:</label>
-  <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
+    <label for="countrySelect">PaÃ­s:</label>
+    <select id="countrySelect" required>
+      <option value="">Cargando paÃ­ses...</option>
+    </select>
 
-  <label for="countrySelect">País:</label>
-  <select id="countrySelect" required>
-    <option value="">Cargando países...</option>
-  </select>
+    <label for="citySelect">Ciudad:</label>
+    <select id="citySelect" disabled required>
+      <option value="">Seleccione un paÃ­s primero</option>
+    </select>
 
-  <label for="citySelect">Ciudad:</label>
-  <select id="citySelect" disabled required>
-    <option value="">Seleccione un país primero</option>
-  </select>
-
-  <button id="submitBtn">Enviar</button>
-  <div class="success" id="message"></div>
+    <button id="submitBtn">Enviar</button>
+    <div class="success-message" id="message">Â¡Gracias! Tu respuesta ha sido registrada.</div>
+  </div>
 
   <script>
     const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
@@ -37,12 +103,12 @@
     const countrySelect = document.getElementById("countrySelect");
     const citySelect = document.getElementById("citySelect");
     const message = document.getElementById("message");
+    const button = document.getElementById("submitBtn");
 
-    // Cargar países
     fetch("https://countriesnow.space/api/v0.1/countries/positions")
       .then(r => r.json())
       .then(({ data }) => {
-        countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
+        countrySelect.innerHTML = '<option value="">-- Selecciona un paÃ­s --</option>';
         data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
           const opt = document.createElement("option");
           opt.value = name;
@@ -51,7 +117,6 @@
         });
       });
 
-    // Cargar ciudades según país
     countrySelect.addEventListener("change", async () => {
       const country = countrySelect.value;
       citySelect.disabled = true;
@@ -73,8 +138,7 @@
       citySelect.disabled = false;
     });
 
-    // Enviar datos al endpoint
-    document.getElementById("submitBtn").addEventListener("click", async () => {
+    button.addEventListener("click", async () => {
       const name = nameInput.value.trim();
       const country = countrySelect.value;
       const city = citySelect.value;
@@ -84,16 +148,29 @@
         return;
       }
 
-      await fetch(endpoint, {
-        method: "POST",
-        body: new URLSearchParams({ name, country, city })
-      });
+      button.disabled = true;
+      button.textContent = "Enviando...";
 
-      message.textContent = "¡Gracias! Tu respuesta ha sido registrada.";
+      try {
+        await fetch(endpoint, {
+          method: "POST",
+          body: new URLSearchParams({ name, country, city })
+        });
+
+        message.style.display = "block";
+      } catch (err) {
+        message.textContent = "Hubo un error. IntÃ©ntalo mÃ¡s tarde.";
+        message.style.display = "block";
+        message.style.color = "red";
+        console.error(err);
+      }
+
       nameInput.value = "";
       countrySelect.value = "";
-      citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
+      citySelect.innerHTML = '<option value="">Seleccione un paÃ­s primero</option>';
       citySelect.disabled = true;
+      button.disabled = false;
+      button.textContent = "Enviar";
     });
   </script>
 </body>
