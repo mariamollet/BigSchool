@@ -218,7 +218,7 @@
     <div class="form-container" id="form">
       <h3>Rellena tu información</h3>
       <label for="nameInput">Tu nombre de Discord:</label>
-      <input id="nameInput" type="text" required placeholder="ejemplo#1234">
+      <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
 
       <label for="countrySelect">País:</label>
       <select id="countrySelect" required>
@@ -243,16 +243,18 @@
       const message = document.getElementById("message");
       const button = document.getElementById("submitBtn");
 
-      fetch("https://countriesnow.space/api/v0.1/countries/positions")
+      fetch("https://restcountries.com/v3.1/all")
         .then(r => r.json())
-        .then(({ data }) => {
+        .then(data => {
           countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
-          data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
+          const countries = data.map(c => c.name.common).sort((a, b) => a.localeCompare(b));
+          countries.forEach(name => {
             const opt = document.createElement("option");
             opt.value = name;
             opt.textContent = name;
             countrySelect.appendChild(opt);
           });
+        });
         });
 
       countrySelect.addEventListener("change", async () => {
