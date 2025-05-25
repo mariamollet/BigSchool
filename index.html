@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Encuesta País y Ciudad</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    label { display: block; margin-top: 20px; }
+    select, input, button { width: 300px; padding: 8px; }
+    button { margin-top: 25px; }
+    .success { color: green; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Encuesta</h1>
+
+  <label for="nameInput">Tu nombre de Discord:</label>
+  <input id="nameInput" type="text" required placeholder="@ejemplo#1234">
+
+  <label for="countrySelect">País:</label>
+  <select id="countrySelect" required>
+    <option value="">Cargando países...</option>
+  </select>
+
+  <label for="citySelect">Ciudad:</label>
+  <select id="citySelect" disabled required>
+    <option value="">Seleccione un país primero</option>
+  </select>
+
+  <button id="submitBtn">Enviar</button>
+  <div class="success" id="message"></div>
+
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbzE72rReiebxTQvdcTK6VSZDbGYE8V5vDOQ87cBx1_3fTxpVurzxha27v34YjDSRskT/exec";
+
+    const nameInput = document.getElementById("nameInput");
+    const countrySelect = document.getElementById("countrySelect");
+    const citySelect = document.getElementById("citySelect");
+    const message = document.getElementById("message");
+
+    // Cargar países
+    fetch("https://countriesnow.space/api/v0.1/countries/positions")
+      .then(r => r.json())
+      .then(({ data }) => {
+        countrySelect.innerHTML = '<option value="">-- Selecciona un país --</option>';
+        data.sort((a, b) => a.name.localeCompare(b.name)).forEach(({ name }) => {
+          const opt = document.createElement("option");
+          opt.value = name;
+          opt.textContent = name;
+          countrySelect.appendChild(opt);
+        });
+      });
+
+    // Cargar ciudades según país
+    countrySelect.addEventListener("change", async () => {
+      const country = countrySelect.value;
+      citySelect.disabled = true;
+      citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+
+      const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country })
+      });
+      const { data } = await res.json();
+      citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+      data.forEach(city => {
+        const opt = document.createElement("option");
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      citySelect.disabled = false;
+    });
+
+    // Enviar datos al endpoint
+    document.getElementById("submitBtn").addEventListener("click", async () => {
+      const name = nameInput.value.trim();
+      const country = countrySelect.value;
+      const city = citySelect.value;
+
+      if (!name || !country || !city) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      await fetch(endpoint, {
+        method: "POST",
+        body: new URLSearchParams({ name, country, city })
+      });
+
+      message.textContent = "¡Gracias! Tu respuesta ha sido registrada.";
+      nameInput.value = "";
+      countrySelect.value = "";
+      citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
+      citySelect.disabled = true;
+    });
+  </script>
+</body>
+</html>
+
+
