@@ -234,6 +234,17 @@
       <div class="success-message" id="message">¡Gracias! Tu respuesta ha sido registrada.</div>
     </div>
 
+    <!-- Gráfico incrustado -->
+    <div style="margin: 40px auto; max-width: 700px; text-align: center;">
+      <h3 style="color: #facc15; margin-bottom: 16px;">🌍 Resultados en tiempo real</h3>
+      <iframe 
+        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSvLoDUqfFZVOY1OwpASKeoLKtZH7H_h3uXNa0HazJ8e7eza-xmn09CKZDc_3uM9n7tZTdtt4oi-klF/pubchart?oid=973000096&format=interactive"
+        width="100%" 
+        height="400" 
+        style="border: none; border-radius: 12px;">
+      </iframe>
+    </div>
+
     <script>
       const endpoint = "https://script.google.com/macros/s/AKfycbzU7aidJxaHvpbZoxD7qI3bZhXs5pLVjDqOGkPOYc-O9-JfTo1VqvH9wT0UAQVsu5yF/exec";
 
@@ -296,6 +307,8 @@
           });
 
           message.style.display = "block";
+          message.textContent = "¡Gracias! Tu respuesta ha sido registrada.";
+          message.style.backgroundColor = "#22c55e";
         } catch (err) {
           message.textContent = "Hubo un error. Inténtalo más tarde.";
           message.style.display = "block";
@@ -314,5 +327,4 @@
   </div>
 </body>
 </html>
-
 
