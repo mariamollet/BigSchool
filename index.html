@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -256,21 +256,37 @@
       regionSelect.appendChild(opt);
     });
     regionSelect.disabled = false;
+  });
 
-    // Cargar ciudades según país y región seleccionados
-    regionSelect.addEventListener("change", async () => {
-      const selectedRegion = regionSelect.value;
-      const selectedCountry = countrySelect.value;
-      const citySelect = document.getElementById("citySelect");
-      citySelect.disabled = true;
-      citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+  // Cargar ciudades según país y región seleccionados
+  regionSelect.addEventListener("change", async () => {
+    const selectedRegion = regionSelect.value;
+    const selectedCountry = countrySelect.value;
+    const citySelect = document.getElementById("citySelect");
+    citySelect.disabled = true;
+    citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
 
-      try {
-        const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country: selectedCountry, state: selectedRegion })
-        });
+    try {
+      const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: selectedCountry, state: selectedRegion })
+      });
+      const result = await res.json();
+      const cities = result.data || [];
+      citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+      cities.forEach(city => {
+        const opt = document.createElement("option");
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      citySelect.disabled = false;
+    } catch (error) {
+      citySelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+      console.error(error);
+    }
+  });
         const result = await res.json();
         const cities = result.data || [];
         citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
