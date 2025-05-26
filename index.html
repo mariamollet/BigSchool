@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -258,7 +258,6 @@
     regionSelect.disabled = false;
   });
 
-  // Cargar ciudades según país y región seleccionados
   regionSelect.addEventListener("change", async () => {
     const selectedRegion = regionSelect.value;
     const selectedCountry = countrySelect.value;
@@ -286,22 +285,6 @@
       citySelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
       console.error(error);
     }
-  });
-        const result = await res.json();
-        const cities = result.data || [];
-        citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-        cities.forEach(city => {
-          const opt = document.createElement("option");
-          opt.value = city;
-          opt.textContent = city;
-          citySelect.appendChild(opt);
-        });
-        citySelect.disabled = false;
-      } catch (error) {
-        citySelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
-        console.error(error);
-      }
-    });
   });
 
   button.addEventListener("click", async () => {
@@ -347,3 +330,4 @@
   </div>
 </body>
 </html>
+
