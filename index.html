@@ -272,8 +272,10 @@
         body: JSON.stringify({ country: selectedCountry, state: selectedRegion })
       });
       const result = await res.json();
-      const cities = result.data || [];
-      citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+      const cities = result && result.data && Array.isArray(result.data) ? result.data : [];
+    citySelect.innerHTML = cities.length
+      ? '<option value="">-- Selecciona una ciudad --</option>'
+      : '<option value="">No hay ciudades disponibles para esta región</option>';
       cities.forEach(city => {
         const opt = document.createElement("option");
         opt.value = city;
@@ -330,4 +332,5 @@
   </div>
 </body>
 </html>
+
 
