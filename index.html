@@ -201,8 +201,8 @@
     <option value="">Cargando países...</option>
   </select>
 
-  <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
-  <select id="citySelect" disabled required>
+  <label for="regionSelect">Comunidad:</label>
+  <select id="regionSelect" disabled required>
     <option value="">Seleccione un país primero</option>
   </select>
 
@@ -236,7 +236,7 @@
     citySelect.disabled = true;
     citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
 
-    const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+    const res = await fetch("https://countriesnow.space/api/v0.1/countries/states", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ country })
@@ -292,5 +292,3 @@
   </div>
 </body>
 </html>
-
-
