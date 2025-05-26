@@ -247,7 +247,7 @@
       body: JSON.stringify({ country })
     });
     const response = await res.json();
-    const states = response.data.states || [];
+    let states = response.data.states || [];
     regionSelect.innerHTML = '<option value="">-- Selecciona una comunidad --</option>';
     states.forEach(region => {
       const opt = document.createElement("option");
@@ -295,8 +295,8 @@
     const region = regionSelect.value;
     const city = document.getElementById("citySelect").value;
 
-    if (!name || !country || !region || !city) {
-      alert("Por favor completa todos los campos.");
+    if (!name || !country) {
+      alert("Por favor completa al menos tu nombre y país.");
       return;
     }
 
@@ -332,5 +332,4 @@
   </div>
 </body>
 </html>
-
 
