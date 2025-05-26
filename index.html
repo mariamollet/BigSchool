@@ -167,29 +167,29 @@
         <a href="#form" class="blue-btn">Quiero unirme</a>
         <a href="#form" class="yellow-btn">Conectar con otros alumnos</a>
       </div>
-
-      <div class="info-grid">
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/02/hourglass_553213-1.svg" alt="Duración">
-          <h4>DURACIÓN</h4>
-          <p>Toda la vida</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/07/Calendar.svg" alt="Inicio">
-          <h4>INICIO</h4>
-          <p>Desde ya</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/07/monitor_266121-1.svg" alt="Metodología">
-          <h4>METODOLOGÍA</h4>
-          <p>Presencial y online</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/06/price-tag_3770820-1.svg" alt="Precio">
-          <h4>PRECIO</h4>
-          <p>Gratis</p>
-        </div>
-      </div>
+  <div class="info-grid">
+  <div class="info-card">
+    <img src="https://thebigschool.com/wp-content/uploads/2024/02/hourglass_553213-1.svg" alt="Duración">
+    <h4>DURACIÓN</h4>
+    <p>Toda la vida</p>
+  </div>
+  <div class="info-card">
+    <img src="https://thebigschool.com/wp-content/uploads/2024/07/Calendar.svg" alt="Inicio">
+    <h4>INICIO</h4>
+    <p>Desde ya</p>
+  </div>
+  <div class="info-card">
+    <img src="https://thebigschool.com/wp-content/uploads/2024/07/monitor_266121-1.svg" alt="Metodología">
+    <h4>METODOLOGÍA</h4>
+    <p>Presencial y online</p>
+  </div>
+  <div class="info-card">
+    <img src="https://thebigschool.com/wp-content/uploads/2024/06/price-tag_3770820-1.svg" alt="Precio">
+    <h4>PRECIO</h4>
+    <p>Gratis</p>
+  </div>
+</div>
+      
     </section>
 
     <div class="form-container" id="form">
@@ -202,9 +202,14 @@
         <option value="">Cargando países...</option>
       </select>
 
-      <label for="citySelect">Ciudad o ciudad grande más cercana:</label>
-      <select id="citySelect" disabled required>
+      <label for="regionSelect">Región:</label>
+      <select id="regionSelect">
         <option value="">Seleccione un país primero</option>
+      </select>
+
+      <label for="citySelect">Ciudad:</label>
+      <select id="citySelect">
+        <option value="">Seleccione una región primero</option>
       </select>
 
       <button id="submitBtn">Enviar</button>
@@ -216,6 +221,7 @@
 
       const nameInput = document.getElementById("nameInput");
       const countrySelect = document.getElementById("countrySelect");
+      const regionSelect = document.getElementById("regionSelect");
       const citySelect = document.getElementById("citySelect");
       const message = document.getElementById("message");
       const button = document.getElementById("submitBtn");
@@ -234,34 +240,66 @@
 
       countrySelect.addEventListener("change", async () => {
         const country = countrySelect.value;
-        citySelect.disabled = true;
-        citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+        regionSelect.innerHTML = '<option value="">Cargando regiones...</option>';
 
-        const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+        const res = await fetch("https://countriesnow.space/api/v0.1/countries/states", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ country })
         });
-        const { data } = await res.json();
-        citySelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-        data.forEach(city => {
+        const response = await res.json();
+        const states = response.data.states || [];
+        regionSelect.innerHTML = '<option value="">-- Selecciona una región --</option>';
+        states.forEach(region => {
           const opt = document.createElement("option");
-          opt.value = city;
-          opt.textContent = city;
-          citySelect.appendChild(opt);
+          opt.value = region.name;
+          opt.textContent = region.name;
+          regionSelect.appendChild(opt);
         });
-        citySelect.disabled = false;
+      });
+
+      regionSelect.addEventListener("change", async () => {
+        const country = countrySelect.value;
+        const state = regionSelect.value;
+        citySelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+
+        try {
+          const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country, state })
+          });
+          const result = await res.json();
+          const cities = result.data || [];
+
+          citySelect.innerHTML = cities.length
+            ? '<option value="">-- Selecciona una ciudad --</option>'
+            : '<option value="">No hay ciudades disponibles</option>';
+
+          cities.forEach(city => {
+            const opt = document.createElement("option");
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+          });
+        } catch (error) {
+          citySelect.innerHTML = '<option value="">Error al cargar ciudades</option>';
+          console.error(error);
+        }
       });
 
       button.addEventListener("click", async () => {
         const name = nameInput.value.trim();
         const country = countrySelect.value;
-        const city = citySelect.value;
+        const selectedRegion = regionSelect.value;
+        const selectedCity = citySelect.value;
 
-        if (!name || !country || !city) {
-          alert("Por favor completa todos los campos.");
+        if (!name || !country) {
+          alert("Por favor completa al menos tu nombre y país.");
           return;
         }
+
+        console.log({ name, country, region: selectedRegion, city: selectedCity });
 
         button.disabled = true;
         button.textContent = "Enviando...";
@@ -269,23 +307,28 @@
         try {
           await fetch(endpoint, {
             method: "POST",
-            body: new URLSearchParams({ name, country, city })
+            body: new URLSearchParams({
+              name,
+              country,
+              region: selectedRegion || '',
+              city: selectedCity || ''
+            })
           });
 
           message.style.display = "block";
           message.textContent = "¡Gracias! Tu respuesta ha sido registrada.";
           message.style.backgroundColor = "#22c55e";
         } catch (err) {
-          message.textContent = "Hubo un error. Inténtalo más tarde.";
           message.style.display = "block";
+          message.textContent = "Hubo un error. Inténtalo más tarde.";
           message.style.backgroundColor = "#dc2626";
           console.error(err);
         }
 
         nameInput.value = "";
         countrySelect.value = "";
-        citySelect.innerHTML = '<option value="">Seleccione un país primero</option>';
-        citySelect.disabled = true;
+        regionSelect.innerHTML = '<option value="">Seleccione un país primero</option>';
+        citySelect.innerHTML = '<option value="">Seleccione una región primero</option>';
         button.disabled = false;
         button.textContent = "Enviar";
       });
@@ -293,6 +336,3 @@
   </div>
 </body>
 </html>
-
-
-
