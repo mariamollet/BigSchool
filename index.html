@@ -167,28 +167,6 @@
         <a href="#form" class="blue-btn">Quiero unirme</a>
         <a href="#form" class="yellow-btn">Conectar con otros alumnos</a>
       </div>
-      <div class="info-grid">
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/02/hourglass_553213-1.svg" alt="Duración">
-          <h4>DURACIÓN</h4>
-          <p>Toda la vida</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/07/Calendar.svg" alt="Inicio">
-          <h4>INICIO</h4>
-          <p>Desde ya</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/07/monitor_266121-1.svg" alt="Metodología">
-          <h4>METODOLOGÍA</h4>
-          <p>Presencial y online</p>
-        </div>
-        <div class="info-card">
-          <img src="https://thebigschool.com/wp-content/uploads/2024/06/price-tag_3770820-1.svg" alt="Precio">
-          <h4>PRECIO</h4>
-          <p>Gratis</p>
-        </div>
-      </div>
     </section>
 
     <div class="form-container" id="form">
@@ -290,17 +268,15 @@
       button.addEventListener("click", async () => {
         const name = nameInput.value.trim();
         const country = countrySelect.value;
-        const region = regionSelect.value;
-        const city = citySelect.value;
+        const selectedRegion = regionSelect.value;
+        const selectedCity = citySelect.value;
 
         if (!name || !country) {
           alert("Por favor completa al menos tu nombre y país.");
           return;
         }
 
-        // Aseguramos que los campos estén habilitados
-        regionSelect.disabled = false;
-        citySelect.disabled = false;
+        console.log({ name, country, region: selectedRegion, city: selectedCity });
 
         button.disabled = true;
         button.textContent = "Enviando...";
@@ -311,8 +287,8 @@
             body: new URLSearchParams({
               name,
               country,
-              region: region || '',
-              city: city || ''
+              region: selectedRegion || '',
+              city: selectedCity || ''
             })
           });
 
